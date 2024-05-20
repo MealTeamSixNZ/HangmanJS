@@ -10,7 +10,7 @@ class Hangman {
         const randomIndex = Math.floor(Math.random()*dictionary.length)
         this.secretWord = dictionary[randomIndex].toLowerCase()
         this.guesses = []
-        this.lives = 5
+        this.lives = 20
         }
 
     guess(letter) {
@@ -46,7 +46,7 @@ class Hangman {
     }
 
     hasWon() {
-        if (this.getHanged().join() === this.secretWord) {
+        if (this.getHanged().join("") === this.secretWord) {
             return true
         }
         else {
@@ -72,11 +72,12 @@ function resetGame() {
     }, 4000)
 }
 
-fetch("https://raw.githubusercontent.com/MealTeamSixNZ/hangman/main/dict.txt").then( (response) => {
-    response.text().then( (text) => {
-        playGame(text.split("\n"))
-    })
-})
+async function Main() {
+    const response = await fetch("https://raw.githubusercontent.com/MealTeamSixNZ/hangman/main/dict.txt")
+    const text = await response.text()
+    playGame(text.split("\n"))
+}
+
 function playGame(dictionary) {
     const h = new Hangman(dictionary)
     const button = document.getElementById("button")
@@ -100,3 +101,4 @@ function playGame(dictionary) {
     })
 }
 
+Main()
